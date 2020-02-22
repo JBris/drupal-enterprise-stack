@@ -80,17 +80,17 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
-  node:
-    image: node:$NODE_TAG
-    container_name: "${PROJECT_NAME}_node"
-    stop_grace_period: 60s
-    restart: always    
-    ports:
-      - ${NODE_PORT}:3000
-    depends_on:
-      - postgres
-    labels:
-      - "traefik.http.routers.${PROJECT_NAME}_node.rule=Host(`node.${PROJECT_BASE_URL}`)"
+  # node:
+  #   image: node:$NODE_TAG
+  #   container_name: "${PROJECT_NAME}_node"
+  #   stop_grace_period: 60s
+  #   restart: always    
+  #   ports:
+  #     - ${NODE_PORT}:3000
+  #   depends_on:
+  #     - postgres
+  #   labels:
+  #     - "traefik.http.routers.${PROJECT_NAME}_node.rule=Host(`node.${PROJECT_BASE_URL}`)"
 
   elasticsearch:
     image: elasticsearch:$ELASTICSEARCH_TAG

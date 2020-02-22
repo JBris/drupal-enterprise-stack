@@ -1,6 +1,6 @@
 .env
 .idea
-app/vendor
+app/**/vendor
 app/sites/default/files/php
 app/sites/default/files/js
 app/sites/default/files/css
