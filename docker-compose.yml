@@ -96,9 +96,17 @@ services:
     image: elasticsearch:$ELASTICSEARCH_TAG
     container_name: "${PROJECT_NAME}_elasticsearch"
     stop_grace_period: 60s
-    restart: always
+    # restart: always
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     environment:
-      ES_JAVA_OPTS: $ES_JAVA_OPTS
+      - "$ES_JAVA_OPTS"
+      - "$NODE_NAME_MASTER"
+      - "$CLUSTER_NAME"
+      - "$CLUSTER_INITIAL_MASTER_NODES"
+      - "$BOOTSTRAP_MEMORY_LOCK"
 
   kibana:
     image: kibana:$KIBANA_TAG
