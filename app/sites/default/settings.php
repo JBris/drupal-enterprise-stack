@@ -755,6 +755,7 @@ $settings['entity_update_backup'] = TRUE;
 # if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
+
 $databases['default']['default'] = array (
   'database' => getenv('DB_NAME'),  
   'username' => getenv('DB_USER'),
@@ -765,4 +766,10 @@ $databases['default']['default'] = array (
   'namespace' => 'Drupal\\Core\\Database\\Driver\\' . getenv('DB_DRIVER'),
   'driver' => getenv('DB_DRIVER'),
 );
+
 $settings['config_sync_directory'] = 'sites/default/files/config_MLQPXj45WOqx2XBN3R5d-PkA276UGlotFeUaBTV7U0uk1ZuVqjB9syEEWKkR6JsKf8nlNqfJFQ/sync';
+
+$settings['redis.connection']['interface'] = 'PhpRedis'; 
+$settings['redis.connection']['host'] = 'redis';  
+$settings['redis.connection']['port'] = '6379';  
+$settings['cache']['default'] = 'cache.backend.redis';
