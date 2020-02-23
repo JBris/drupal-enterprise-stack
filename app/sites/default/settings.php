@@ -756,13 +756,13 @@ $settings['entity_update_backup'] = TRUE;
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
 $databases['default']['default'] = array (
-  'database' => 'drupal',
-  'username' => 'user',
-  'password' => 'pass',
+  'database' => getenv('DB_NAME'),  
+  'username' => getenv('DB_USER'),
+  'password' => getenv('DB_PASSWORD'),
   'prefix' => '',
-  'host' => 'postgres',
-  'port' => '5432',
-  'namespace' => 'Drupal\\Core\\Database\\Driver\\pgsql',
-  'driver' => 'pgsql',
+  'host' => getenv('DB_HOST'),
+  'port' => getenv('DB_CONTAINER_PORT'),
+  'namespace' => 'Drupal\\Core\\Database\\Driver\\' . getenv('DB_DRIVER'),
+  'driver' => getenv('DB_DRIVER'),
 );
 $settings['config_sync_directory'] = 'sites/default/files/config_MLQPXj45WOqx2XBN3R5d-PkA276UGlotFeUaBTV7U0uk1ZuVqjB9syEEWKkR6JsKf8nlNqfJFQ/sync';
