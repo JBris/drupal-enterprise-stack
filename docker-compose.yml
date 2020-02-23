@@ -5,6 +5,11 @@ services:
   postgres:
     image: postgres:$POSTGRES_TAG
     container_name: "${PROJECT_NAME}_postgres"
+    build: 
+      dockerfile: Dockerfile
+      context: ./services/postgres
+      args:
+        POSTGRES_TAG: $POSTGRES_TAG
     stop_grace_period: 60s
     restart: always
     environment:

@@ -56,7 +56,10 @@ drush:
 
 #make dbdump > drupal.sql
 dbdump:
-	docker-compose exec postgres pg_dump -C -U user -w drupal
+	docker-compose exec postgres pg_dump -C -U $(DB_USER) -w $(DB_NAME)
 
-dbdump-exp:
-	docker-compose exec postgres pg_dump -C -U user -w drupal > data/drupal.sql
+dbexp:
+	docker-compose exec postgres pg_dump -C -U $(DB_USER) -w $(DB_NAME) > data/$(DB_NAME).sql
+
+dbimp:
+	docker-compose exec postgres "dbimp.sh"
