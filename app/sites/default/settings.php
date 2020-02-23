@@ -769,6 +769,8 @@ $databases['default']['default'] = array (
 
 $settings['config_sync_directory'] = 'sites/default/files/config_MLQPXj45WOqx2XBN3R5d-PkA276UGlotFeUaBTV7U0uk1ZuVqjB9syEEWKkR6JsKf8nlNqfJFQ/sync';
 
+#Redis
+$settings['container_yamls'][] = 'modules/contrib/redis/example.services.yml';
 $settings['redis.connection']['interface'] = 'PhpRedis'; 
 $settings['redis.connection']['host'] = 'redis';  
 $settings['redis.connection']['port'] = '6379';  
