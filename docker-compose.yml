@@ -27,11 +27,16 @@ services:
     container_name: "${PROJECT_NAME}_drupal"
     stop_grace_period: 60s
     restart: always
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     build: 
       dockerfile: Dockerfile
       context: .
       args:
         DRUPAL_TAG: $DRUPAL_TAG
+        MEMORY_LIMIT: $DRUPAL_MEMORY_LIMIT
     depends_on:
       - postgres
     environment:
