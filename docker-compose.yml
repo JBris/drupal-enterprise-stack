@@ -38,7 +38,6 @@ services:
       args:
         DRUPAL_TAG: $DRUPAL_TAG
         MEMORY_LIMIT: $DRUPAL_MEMORY_LIMIT
-        PHP_SENDMAIL_PATH: /usr/local/bin/mhsendmail --smtp-addr="mailhog:1025"
     depends_on:
       - postgres
     environment:
