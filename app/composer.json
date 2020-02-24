@@ -20,6 +20,7 @@
         "drupal/core-project-message": "^8.8",
         "drupal/core-recommended": "^8.8",
         "drupal/core-vendor-hardening": "^8.8",
+        "drupal/elasticsearch_connector": "^7.0",
         "drupal/redis": "^1.4",
         "drupal/search_api": "^1.15"
     },

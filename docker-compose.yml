@@ -27,6 +27,7 @@ services:
     container_name: "${PROJECT_NAME}_drupal"
     stop_grace_period: 60s
     restart: always
+    #privileged: true
     ulimits:
       memlock:
         soft: -1
@@ -47,6 +48,7 @@ services:
       DB_PASSWORD: $DB_PASSWORD
       DB_NAME: $DB_NAME
       DB_DRIVER: $DB_DRIVER
+      ENABLE_REDIS: $DRUPAL_ENABLE_REDIS
       COLUMNS: 80
     ports:
       - ${DRUPAL_PORT}:80
