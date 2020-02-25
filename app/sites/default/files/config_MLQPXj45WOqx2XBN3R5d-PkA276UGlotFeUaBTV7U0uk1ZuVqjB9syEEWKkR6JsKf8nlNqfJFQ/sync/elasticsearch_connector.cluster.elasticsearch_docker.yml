@@ -1,0 +1,14 @@
+uuid: b74c1e04-9a0d-432b-b0c2-6f8ca084118b
+langcode: en
+status: '1'
+dependencies: {  }
+cluster_id: elasticsearch_docker
+name: 'Elasticsearch Docker'
+url: 'http://elasticsearch:9200'
+options:
+  multiple_nodes_connection: false
+  use_authentication: 0
+  authentication_type: Basic
+  username: ''
+  password: ''
+  timeout: '2'

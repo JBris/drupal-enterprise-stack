@@ -1,0 +1,24 @@
+uuid: b76da696-76de-410f-a6ec-44919e9b511e
+langcode: en
+status: true
+dependencies:
+  module:
+    - elasticsearch_connector
+id: elasticsearch_docker
+name: 'Elasticsearch Docker'
+description: 'Elasticsearch instance encapsulated within a Docker container.'
+backend: elasticsearch
+backend_config:
+  cluster_settings:
+    cluster: elasticsearch_docker
+  fuzziness: auto
+  scheme: http
+  host: localhost
+  port: '9200'
+  path: ''
+  excerpt: false
+  retrieve_data: false
+  highlight_data: false
+  http_method: AUTO
+  autocorrect_spell: true
+  autocorrect_suggest_words: true

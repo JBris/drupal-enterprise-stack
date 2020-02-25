@@ -1,0 +1,132 @@
+uuid: 1a9481b0-5928-4bb2-90c8-518557cfcf10
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.comment.comment_body
+    - field.storage.node.body
+    - field.storage.node.comment
+    - field.storage.node.field_image
+    - field.storage.node.field_tags
+    - search_api.server.elasticsearch_docker
+  module:
+    - comment
+    - node
+    - search_api
+id: drupal_content
+name: drupal_content
+description: ''
+read_only: false
+field_settings:
+  body:
+    label: Body
+    datasource_id: 'entity:node'
+    property_path: body
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.body
+  cid:
+    label: 'Comment ID'
+    datasource_id: 'entity:comment'
+    property_path: cid
+    type: integer
+    dependencies:
+      module:
+        - comment
+  comment:
+    label: Comments
+    datasource_id: 'entity:node'
+    property_path: comment
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.comment
+  comment_body:
+    label: Comment
+    datasource_id: 'entity:comment'
+    property_path: comment_body
+    type: text
+    dependencies:
+      config:
+        - field.storage.comment.comment_body
+  field_image:
+    label: Image
+    datasource_id: 'entity:node'
+    property_path: field_image
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_image
+  field_tags:
+    label: Tags
+    datasource_id: 'entity:node'
+    property_path: field_tags
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_tags
+  mail:
+    label: Email
+    datasource_id: 'entity:comment'
+    property_path: mail
+    type: string
+    dependencies:
+      module:
+        - comment
+  nid:
+    label: ID
+    datasource_id: 'entity:node'
+    property_path: nid
+    type: integer
+    dependencies:
+      module:
+        - node
+  title:
+    label: Title
+    datasource_id: 'entity:node'
+    property_path: title
+    type: string
+    dependencies:
+      module:
+        - node
+  type:
+    label: 'Content type'
+    datasource_id: 'entity:node'
+    property_path: type
+    type: string
+    dependencies:
+      module:
+        - node
+datasource_settings:
+  'entity:comment':
+    bundles:
+      default: false
+      selected:
+        - comment
+    languages:
+      default: false
+      selected:
+        - en
+  'entity:node':
+    bundles:
+      default: false
+      selected:
+        - article
+        - page
+    languages:
+      default: false
+      selected:
+        - en
+processor_settings:
+  add_url: {  }
+  aggregated_field: {  }
+  language_with_fallback: {  }
+  rendered_item: {  }
+tracker_settings:
+  default:
+    indexing_order: fifo
+options:
+  index_directly: true
+  cron_limit: 50
+server: elasticsearch_docker
