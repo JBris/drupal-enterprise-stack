@@ -776,5 +776,6 @@ if ($enable_redis) {
   $settings['redis.connection']['host'] = 'redis';  
   $settings['redis.connection']['port'] = '6379';  
   $settings['cache']['default'] = 'cache.backend.redis';
+  $settings['queue_default'] = 'queue.redis_reliable';
   $settings['container_yamls'][] = 'modules/contrib/redis/example.services.yml';
 }
