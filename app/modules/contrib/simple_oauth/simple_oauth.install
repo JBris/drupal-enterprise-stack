@@ -1,0 +1,48 @@
+<?php
+
+/**
+ * @file
+ * Installation and updating routines.
+ */
+
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+
+/**
+ * Define the default batch size.
+ */
+function simple_oauth_update_8001() {
+  \Drupal::configFactory()
+    ->getEditable('simple_oauth.settings')
+    ->set('token_cron_batch_size', 0)
+    ->save();
+}
+
+/**
+ * Define the default authorization code expiration value.
+ */
+function simple_oauth_update_8401() {
+  \Drupal::configFactory()
+    ->getEditable('simple_oauth.settings')
+    ->set('authorization_code_expiration', 300)
+    ->save();
+}
+
+/**
+ * Install the PKCE basefield for consumer entities.
+ */
+function simple_oauth_update_8403() {
+
+  $field_storage_definition = BaseFieldDefinition::create('boolean')
+    ->setLabel(new TranslatableMarkup('Use PKCE?'))
+    ->setDescription(new TranslatableMarkup('A boolean indicating whether the client uses @pkce (e.g., a native client or SPA)'))
+    ->setRevisionable(TRUE)
+    ->setTranslatable(TRUE)
+    ->setDefaultValue(FALSE);
+
+  \Drupal::entityDefinitionUpdateManager()
+    ->installFieldStorageDefinition('pkce', 'consumer', 'simple_oauth', $field_storage_definition);
+
+  return t('Field pkce installed for the consumer entity.');
+}
