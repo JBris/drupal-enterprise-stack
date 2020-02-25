@@ -1,0 +1,14 @@
+uuid: 9a5aaec0-225e-475e-9ac9-382c32e8f201
+langcode: en
+status: true
+dependencies: {  }
+name: articles
+label: Articles
+schema: composable
+schema_configuration:
+  composable:
+    extensions: {  }
+endpoint: /graphql
+debug: false
+caching: true
+batching: true

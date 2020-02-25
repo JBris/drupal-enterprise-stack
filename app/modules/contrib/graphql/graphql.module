@@ -1,0 +1,41 @@
+<?php
+
+/**
+ * Implements hook_help().
+ */
+function graphql_help($routeName) {
+  if ($routeName !== 'help.page.graphql') {
+    return;
+  }
+
+  $title = t('About');
+  $description = t('
+<p>This module generates and exposes a
+  <a href="http://graphql.org/" target="_blank">GraphQL</a> schema for
+  <a href="https://www.drupal.org/8" target="_blank">Drupal 8</a> entities,
+  and allows you to expose your own custom schema in a consistent way and with
+  minimal effort.</p>');
+
+  $help = <<<EOT
+<h3>$title</h3>
+$description
+EOT;
+
+  return $help;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function graphql_theme() {
+  return [
+    'page__graphql_explorer' => [
+      'render element' => 'elements',
+      'base hook' => 'block',
+    ],
+    'page__graphql_voyager' => [
+      'render element' => 'elements',
+      'base hook' => 'block',
+    ],
+  ];
+}
