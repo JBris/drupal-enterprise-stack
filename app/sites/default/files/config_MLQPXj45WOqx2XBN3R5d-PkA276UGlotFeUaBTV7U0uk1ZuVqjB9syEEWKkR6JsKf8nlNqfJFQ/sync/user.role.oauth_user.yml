@@ -1,0 +1,9 @@
+uuid: 13d7b63b-98f5-439b-89d6-bd3ed24a03d7
+langcode: en
+status: true
+dependencies: {  }
+id: oauth_user
+label: 'OAuth2 User'
+weight: 3
+is_admin: null
+permissions: {  }
