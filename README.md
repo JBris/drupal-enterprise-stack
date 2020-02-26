@@ -5,6 +5,7 @@
 * [Nginx](#nginx)  
 * [PostgreSQL](#postgresql)  
 * [Redis](#redis)  
+* [Elasticsearch and Kibana](#elasticsearch-kibana)  
 * [Mailhog](#mailhog)  
 
 ## Drupal <a name="drupal"/>
@@ -55,9 +56,11 @@ The following settings can be configured in your .env file:
 
 *Link:* https://www.drupal.org/project/redis
 
+Redis has been included for performant and scalable caching and job queueing purposes.
+
 The Drupal stack uses the PHPRedis as its PHP client. This extension will be installed during the Drupal image build process.
 
-Enable the Redis module. Visit localhost/admin/reports/redis to view the current status of the Redis module.
+Enable the Redis module. Visit http://localhost/admin/reports/redis to view the current status of the Redis module.
 
 Ensure that the following settings have been added to the settings.php file.
 
@@ -69,6 +72,18 @@ $settings['cache']['default'] = 'cache.backend.redis';
 $settings['queue_default'] = 'queue.redis_reliable';
 $settings['container_yamls'][] = 'modules/contrib/redis/example.services.yml';
 ```
+
+## Elasticsearch and Kibana <a name="#elasticsearch-kibana"/>
+
+Elasticsearch and Kibana have been included in the Docker stack to facilitate powerful full-text search functionality.
+
+Firstly, enable the Search API and Elasticsearch Connector modules.
+
+Visit http://localhost/admin/config/search/elasticsearch-connector. Select `Add cluster`. By default, the server URL will be http://elasticsearch:9200 - the URL to access the Elasticsearch container within a Docker bridge network.
+
+Next, visit http://localhost/admin/config/search/search-api. Click `Add server`. Select Elasticsearch as your backend, and choose your newly configured Elasticsearch cluster from the drop-down list.
+
+Finally, click `Add index`. Tick the content that you want Elasticsearch to index from the checkbox list. Choose your newly configured Elasticsearch server from the bulletpoint list. You can either save your configuration now or select the fields that you wish to index next. Finally, you may select `Search API processors` to modify your search queries (e.g. string tokenizers and field weightings).
 
 ## Mailhog <a name="mailhog"/>
 
