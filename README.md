@@ -1,6 +1,7 @@
 # drupal-enterprise-stack
 
 * [Drupal](#drupal)  
+* [Drush](#drush)  
 * [Nginx](#nginx)  
 * [PostgreSQL](#postgresql)  
 * [Redis](#redis)  
@@ -10,11 +11,19 @@
 
 *Link*: https://www.drupal.org/8
 
-Drupal 8 comes preconfigured and heavily leverages the other services available in the docker stack. The latest release of composer will be installed during the image build.
+Drupal 8 comes preconfigured and heavily leverages the other services available in the docker stack. 
+
+The latest release of composer will be installed during the image build. Composer can be called using `make composer a="$ARG"`. For example, `make composer a="require drupal/redis"` to retrieve the Redis module and its dependencies.
 
 All included contrib modules can be found here: https://github.com/JBris/drupal-enterprise-stack/tree/master/app/modules/contrib
 
 An example settings.php file can be found here. https://github.com/JBris/drupal-enterprise-stack/blob/master/app/sites/default/settings.php. Docker environment variables can be accessed using the `getenv()` function.
+
+## Drush <a name="drush"/>
+
+*Link*: https://www.drush.org/
+
+A separate drush container has been included to execute drush commands on your Drupal instance. These can be executed using `make drush a="$ARG"`. For example, `make drush a="cr"` will clear the Drupal cache.
 
 ## Nginx <a name="nginx"/>
 
@@ -64,6 +73,7 @@ $settings['container_yamls'][] = 'modules/contrib/redis/example.services.yml';
 ## Mailhog <a name="mailhog"/>
 
 *Link:* https://github.com/mailhog/MailHog
+
 *Link:* https://github.com/mailhog/mhsendmail
 
 The Mailhog service has been included in the Docker stack to capture emails during local development.
