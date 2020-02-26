@@ -2,7 +2,8 @@
 
 * [Drupal](#drupal)  
 * [Drush](#drush)  
-* [Nginx](#nginx)  
+* [Nginx](#nginx)
+* [OAuth2](#oauth2)  
 * [PostgreSQL](#postgresql)  
 * [Redis](#redis)  
 * [Elasticsearch and Kibana](#elasticsearch-kibana)  
@@ -32,6 +33,28 @@ Nginx acts as the Drupal service's web server. The default configuration file ca
 
 To connect to the drupal service, `server drupal:9000;` must be included in an upstream block.
 
+## OAuth2 <a name="oauth2"/>
+
+*Link*: https://www.drupal.org/project/simple_oauth
+
+*Link*: https://github.com/thephpleague/oauth2-client
+
+First, enable the Simple OAuth module. 
+
+Next, visit http://localhost/admin/config/people/simple_oauth. You may either use an existing public-private key pair or generate a new pair by selecting `Generate keys`. Then select the `Add Client` button. Fill out the inputs fields as required. The **New Secret** field is an optional secret key needed to create a new token. Assign a user role to the **Scopes** checkbox lists (you may need to create a new role first). Finally, click `Save`.
+
+Test that your configuration is successful by making a **POST** request to http://localhost/oauth/token. The request body should be submitted as multipart form data. 
+
+| Key           | Value         |  
+| ------------- |:-------------:|  
+| grant_type    | password      | 
+| client_id     | $UUID         |    
+| username      | username      |    
+| password      | password      |    
+| client_secret | secret        |    
+
+The *client_id* will be one of the UUIDs listed at http://localhost/admin/config/services/consumer. The client_secret is an optional value that you would have entered when creating the OAuth client via the **New Secret** field.
+
 ## PostgreSQL <a name="postgresql"/>
 
 The Drupal stack uses Postgres as its database. 
@@ -40,16 +63,16 @@ Database dumps can be imported and exported using `make dbimp` and `make dbexp` 
 
 The following settings can be configured in your .env file:
 
-| Name        | Default Value           |  
+| Name          | Default Value |  
 | ------------- |:-------------:|  
-| DB_NAME     | drupal | 
-| DB_USER    | user      |    
-| DB_PASSWORD | pass     |    
-| DB_ROOT_PASSWORD | password     |    
-| DB_HOST | postgres     |    
-| DB_PORT | 5432     |    
-| DB_CONTAINER_PORT | 5432     |    
-| DB_DRIVER | pgsql     |    
+| DB_NAME       | drupal        | 
+| DB_USER       | user          |    
+| DB_PASSWORD   | pass          |    
+| DB_ROOT_PASSWORD | password   |    
+| DB_HOST       | postgres      |    
+| DB_PORT       | 5432          |    
+| DB_CONTAINER_PORT | 5432      |    
+| DB_DRIVER     | pgsql         |    
 
 
 ## Redis <a name="redis"/>
@@ -73,7 +96,11 @@ $settings['queue_default'] = 'queue.redis_reliable';
 $settings['container_yamls'][] = 'modules/contrib/redis/example.services.yml';
 ```
 
-## Elasticsearch and Kibana <a name="#elasticsearch-kibana"/>
+## Elasticsearch and Kibana <a name="elasticsearch-kibana"/>
+
+*Link:* https://www.drupal.org/project/search_api
+
+*Link:* https://www.drupal.org/project/elasticsearch_connector
 
 Elasticsearch and Kibana have been included in the Docker stack to facilitate powerful full-text search functionality.
 
