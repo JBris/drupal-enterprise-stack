@@ -4,6 +4,7 @@
 * [Nginx](#nginx)  
 * [PostgreSQL](#postgresql)  
 * [Redis](#redis)  
+* [Mailhog](#mailhog)  
 
 ## Drupal <a name="drupal"/>
 
@@ -12,6 +13,8 @@
 Drupal 8 comes preconfigured and heavily leverages the other services available in the docker stack. The latest release of composer will be installed during the image build.
 
 All included contrib modules can be found here: https://github.com/JBris/drupal-enterprise-stack/tree/master/app/modules/contrib
+
+An example settings.php file can be found here. https://github.com/JBris/drupal-enterprise-stack/blob/master/app/sites/default/settings.php. Docker environment variables can be accessed using the `getenv()` function.
 
 ## Nginx <a name="nginx"/>
 
@@ -57,3 +60,14 @@ $settings['cache']['default'] = 'cache.backend.redis';
 $settings['queue_default'] = 'queue.redis_reliable';
 $settings['container_yamls'][] = 'modules/contrib/redis/example.services.yml';
 ```
+
+## Mailhog <a name="mailhog"/>
+
+*Link:* https://github.com/mailhog/MailHog
+*Link:* https://github.com/mailhog/mhsendmail
+
+The Mailhog service has been included in the Docker stack to capture emails during local development.
+
+The mhsendmail package will be installed during the Docker build phase. This package acts as a sendmail replacement.
+
+The PHP sendmail path will be set to `sendmail_path='/usr/local/bin/mhsendmail --smtp-addr="mailhog:1025` in `/usr/local/etc/php/conf.d/sendmail.ini` within the Drupal container.
