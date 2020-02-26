@@ -23,6 +23,7 @@
         "drupal/elasticsearch_connector": "^7.0",
         "drupal/graphql": "4.x-dev",
         "drupal/redis": "^1.4",
+        "drupal/restui": "1.x-dev",
         "drupal/search_api": "^1.15",
         "drupal/simple_oauth": "^4.4"
     },
