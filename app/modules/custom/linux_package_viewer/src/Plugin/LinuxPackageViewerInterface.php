@@ -37,4 +37,12 @@ interface LinuxPackageViewerInterface extends PluginInspectionInterface {
    */
   public function execute();
 
+  /**
+   * Return the base package search URL
+   * 
+   * @return string
+   *  The base package search URL.
+   */
+  public function getSearchUrl();
+
 }

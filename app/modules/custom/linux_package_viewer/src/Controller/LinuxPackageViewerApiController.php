@@ -34,11 +34,20 @@ class LinuxPackageViewerApiController extends ControllerBase {
     */
     public static function create(ContainerInterface $container) {
         return new static (
-            $container->get('plugin.manager.linux_package_viewer')
+            $container->get('plugin.manager.linux_package_viewer')        
         );
     }
 
-    public function search(Request $request) {
-        return new Response(Json::encode(["hello" => "world"])); 
+    public function search(Request $request, $distribution, $package) {
+        $definitions = $this->pluginManager->getDefinitions();
+        $id = "${distribution}_viewer";
+
+        if (!isset($definitions[$id])) {
+            return new JsonResponse(["error" => 1, "message" => "Unsupported distribution: ${distribution}"], 400);
+        }
+        $instance = $this->pluginManager->createInstance($id);
+        $instance->setPackage($package);
+        $results = $instance->execute();
+        return new JsonResponse($results); 
     }
  }
