@@ -1,0 +1,4 @@
+services:
+  plugin.manager.linux_package_viewer:
+    class: Drupal\linux_package_viewer\LinuxPackageViewerPluginManager
+    parent: default_plugin_manager

@@ -1,0 +1,5 @@
+name: Linux Package Viewer
+type: module
+description: 'View and store Linux package data for later use.'
+package: Linux Package Viewer
+core: 8.x
