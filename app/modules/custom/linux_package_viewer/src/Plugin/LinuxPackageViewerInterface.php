@@ -46,6 +46,23 @@ interface LinuxPackageViewerInterface extends PluginInspectionInterface {
    */
   public function searchRaw();
 
+    /**
+   * Executes the view.
+   *
+   * @return array
+   *   A structured list of view results.
+   */
+  public function view();
+
+  
+  /**
+   * Executes the view and return the raw results.
+   *
+   * @return array
+   *   A structured list of view results.
+   */
+  public function viewRaw();
+
   /**
    * Return the base package search URL
    * 

@@ -48,7 +48,9 @@ class LinuxPackageViewerApiController extends ControllerBase {
         $instance = $this->pluginManager->createInstance($id);
         $instance->setPackage($package);
         $results = $instance->search();
-        return new JsonResponse($results); 
+        $status = 200;
+        if (isset($results->error)) { $status = 400; }
+        return new JsonResponse($results, $status); 
     }
 
     public function view(Request $request, $distribution, $package) {
@@ -60,7 +62,9 @@ class LinuxPackageViewerApiController extends ControllerBase {
         }
         $instance = $this->pluginManager->createInstance($id);
         $instance->setPackage($package);
-        $results = $instance->search();
-        return new JsonResponse($results); 
+        $results = $instance->view();
+        $status = 200;
+        if (isset($results->error)) { $status = 400; }
+        return new JsonResponse($results, $status); 
     }
  }

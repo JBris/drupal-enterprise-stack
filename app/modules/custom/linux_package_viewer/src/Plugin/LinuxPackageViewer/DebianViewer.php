@@ -14,7 +14,7 @@ use Drupal\linux_package_viewer\Plugin\LinuxPackageViewerPluginBase;
 class DebianViewer extends LinuxPackageViewerPluginBase implements ContainerFactoryPluginInterface {
     use GetSearchUrlTrait;
     
-    const SEARCH_URL = 'https://sources.debian.org/api/search';
+    const SEARCH_URL = 'https://sources.debian.org/api';
 
     /**
     * {@inheritdoc}
@@ -25,9 +25,9 @@ class DebianViewer extends LinuxPackageViewerPluginBase implements ContainerFact
         $url = $this->getSearchUrl();
 
         try {
-            $results = $this->httpClient->get("${url}/${package}");
+            $results = $this->httpClient->get("${url}/search/${package}");
         } catch (\Exception $e) {
-            return [];
+            return ["error" => "1", "message" => $e->getMessage()];
         }
 
         $body = $results->getBody();
@@ -44,12 +44,40 @@ class DebianViewer extends LinuxPackageViewerPluginBase implements ContainerFact
     }
 
     /**
+    * {@inheritdoc}
+    */
+    public function viewRaw() {
+        $package = $this->getPackage();
+        if ($package === "") { return []; }
+        $url = $this->getSearchUrl();
+
+        try {
+            $results = $this->httpClient->get("${url}/src/${package}");
+        } catch (\Exception $e) {
+            return ["error" => "1", "message" => $e->getMessage()];
+        }
+
+        $body = $results->getBody();
+        $decodedBody = json_decode($body);
+        return $decodedBody;
+    }
+
+    /**
+    * {@inheritdoc}
+    */
+    public function view() {
+        $info = $this->viewRaw();
+        return $this->flattenPackageInfo($info);
+    }
+
+    /**
      * Extract package names from an object of data.
      * 
      * @return array
      *  The list of package names.
      */
     protected function extractPackageNames($packages){
+        if (isset($packages->error)) { return $packages; }
         $results = [];
         if(!isset($packages->results)) { return $results; }
         $packageResults = $packages->results;
@@ -67,4 +95,25 @@ class DebianViewer extends LinuxPackageViewerPluginBase implements ContainerFact
         return $results;
     }
 
+    /**
+     * Flatten and extract relevant data from a package set.
+     * 
+     * @return array
+     *  The collection of package information.
+     */
+    protected function flattenPackageInfo($info) {
+        if (isset($info->error)) { return $info; }
+        $results = [];
+        if(!isset($info->versions)) { return $results; }
+        $versions = $info->versions;
+
+        foreach($versions as $version) {
+            $result = $version;
+            $result->name = $info->package;
+            $result->displayName = $result->name . "-" . $result->version;
+            $results[] = $result;
+        }
+
+        return $results;
+    }
 }

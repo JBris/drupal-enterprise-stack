@@ -32,11 +32,10 @@ class UbuntuViewer extends LinuxPackageViewerPluginBase implements ContainerFact
                     "source_name" => $package,
                     "ws.size" => "200",
                     "ordered" => "false",
-                    "memo" => "200"
                 ]
             ]);
         } catch (\Exception $e) {
-            return [];
+            return ["error" => "1", "message" => $e->getMessage()];
         }
 
         $body = $results->getBody();
@@ -53,12 +52,48 @@ class UbuntuViewer extends LinuxPackageViewerPluginBase implements ContainerFact
     }
 
     /**
+    * {@inheritdoc}
+    */
+    public function viewRaw() {
+        $package = $this->getPackage();
+        if ($package === "") { return []; }
+        $url = $this->getSearchUrl();
+
+        try {
+            $results = $this->httpClient->get($url, [
+                "query" => [           
+                    "ws.op" => "getPublishedSources",
+                    "exact_match" => "true",
+                    "source_name" => $package,
+                    "ws.size" => "200",
+                    "ordered" => "false",
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return ["error" => "1", "message" => $e->getMessage()];
+        }
+
+        $body = $results->getBody();
+        $decodedBody = json_decode($body);
+        return $decodedBody;
+    }
+
+    /**
+    * {@inheritdoc}
+    */
+    public function view() {
+        $info = $this->viewRaw();
+        return $this->flattenPackageInfo($info);
+    }
+
+    /**
      * Extract package names from an object of data.
      * 
      * @return array
      *  The list of package names.
      */
     protected function extractPackageNames($packages){
+        if (isset($packages->error)) { return $packages; }
         $results = [];
         if(!isset($packages->entries)) { return $results; }
         $entries = $packages->entries;
@@ -69,5 +104,30 @@ class UbuntuViewer extends LinuxPackageViewerPluginBase implements ContainerFact
         }
 
         return array_keys($results);
+    }
+
+    /**
+     * Flatten and extract relevant data from a package set.
+     * 
+     * @return array
+     *  The collection of package information.
+     */
+    protected function flattenPackageInfo($info) {
+        if (isset($info->error)) { return $info; }
+        $results = [];
+        if(!isset($info->entries)) { return $results; }
+        $entries = $info->entries;
+
+        foreach($entries as $entry) {
+            $result = (object) [];
+            $result->name = $entry->source_package_name;
+            $result->displayName = $entry->display_name;
+            $result->version = $entry->source_package_version;
+            $result->status = $entry->status;
+            $result->publishDate = $entry->date_published;
+            $results[] = $result;
+        }
+
+        return $results;
     }
 }
