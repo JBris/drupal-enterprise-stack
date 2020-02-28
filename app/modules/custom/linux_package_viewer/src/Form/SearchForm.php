@@ -22,8 +22,8 @@ class SearchForm extends FormBase {
     /**
     * Constructs a new FileTransferAuthorizeForm object.
     *
-    * @param string $root
-    *   The app root.
+    * @param PluginManagerInterface $plugin_manager
+    *   The plugin manager.
     */
     public function __construct(PluginManagerInterface $plugin_manager) {
         $this->pluginManager = $plugin_manager;
@@ -116,7 +116,7 @@ class SearchForm extends FormBase {
             ];
         }
         
-        $ele['#prefix'] = '<br/> <div id="linux-package-viewer-search-results-wrapper">';
+        $ele['#prefix'] = '<div id="linux-package-viewer-search-results-wrapper">';
         $ele['#suffix'] = '</div>';
         return $ele;
     }

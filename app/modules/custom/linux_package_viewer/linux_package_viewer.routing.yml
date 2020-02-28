@@ -1,4 +1,4 @@
-linux_package_viewer.search:
+linux_package_viewer.search_form:
     path: /linux-packages/search
     defaults:
       _form: '\Drupal\linux_package_viewer\Form\SearchForm'
@@ -6,8 +6,15 @@ linux_package_viewer.search:
     methods: ['GET', 'POST']
     requirements:
         _permission: 'view linux packages'
-    options:
-      _admin_route: TRUE
+
+linux_package_viewer.view_form:
+    path: /linux-packages/view/{distribution}/{package}
+    defaults:
+      _form: '\Drupal\linux_package_viewer\Form\ViewForm'
+      _title: 'View'
+    methods: ['GET', 'POST']
+    requirements:
+        _permission: 'view linux packages'
 
 linux_package_viewer.search.api:
     path: /api/linux-packages/search/{distribution}/{package}

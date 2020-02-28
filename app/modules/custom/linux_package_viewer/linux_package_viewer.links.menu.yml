@@ -1,0 +1,5 @@
+linux_package_viewer.search_form:
+  title: 'Linux Package Search Form'
+  description: 'Search for Linux packages.'
+  route_name: linux_package_viewer.search_form
+  parent: system.admin_config_search
