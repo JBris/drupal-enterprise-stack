@@ -2,6 +2,7 @@
 
 namespace Drupal\linux_package_viewer\Form;
 
+use Drupal\Core\Url;
 use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -47,7 +48,6 @@ class SearchForm extends FormBase {
     }
 
     public function buildForm(array $form, FormStateInterface $form_state) {
-
         $definitions = $this->pluginManager->getDefinitions();
         $form['distribution'] = [
             '#type' => 'select',
@@ -114,11 +114,31 @@ class SearchForm extends FormBase {
             $ele[$i]['package'] = [
                 '#plain_text' => $this->t($result),
             ];
+
+            $ele[$i]['view'] = [
+                '#type' => 'link',
+                '#title' => $this->t('View Package'),
+                '#url' => Url::fromRoute('linux_package_viewer.view_form', [
+                    'distribution' => $distribution, 
+                    'package' => $result,
+                ]),
+                '#options' => [
+                    'attributes' => [
+                        'class' => ['use-ajax'],
+                        'data-dialog-type' => 'modal',
+                        'data-dialog-options' => json_encode([
+                            'width' => '80%',
+                            'height' => '80%',
+                            'max-width' => '100%',
+                            'max-height' => '100%',
+                        ]),
+                    ],
+                ],
+            ];
         }
         
         $ele['#prefix'] = '<div id="linux-package-viewer-search-results-wrapper">';
         $ele['#suffix'] = '</div>';
         return $ele;
     }
-
 }

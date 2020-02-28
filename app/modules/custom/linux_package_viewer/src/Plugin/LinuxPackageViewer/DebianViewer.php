@@ -7,7 +7,7 @@ use Drupal\linux_package_viewer\Plugin\LinuxPackageViewerPluginBase;
 
 /**
  * @LinuxPackageViewerPlugin(
- *   id = "debian_viewer",
+ *   id = "debian",
  *   distribution = "Debian"
  * )
  */
@@ -68,6 +68,53 @@ class DebianViewer extends LinuxPackageViewerPluginBase implements ContainerFact
     public function view() {
         $info = $this->viewRaw();
         return $this->flattenPackageInfo($info);
+    }
+
+    /**
+    * {@inheritdoc}
+    */
+    public function render() {
+        $results = $this->view();
+        if (isset($results->error)) {
+            $msg = $results->message;
+            $ele = [
+                '#prefix' => '<br/>',
+                '#plain_text' => $this->t("Error: ${msg}"),
+                '#suffix' => '<br/>',
+            ];
+            return $ele;
+        }
+
+        $ele = [
+            '#type' => 'table',
+            '#header' => [
+                $this->t('Name'),
+                $this->t('Display'),
+                $this->t('Version'),
+            ],
+        ];
+
+        foreach($results as $i => $result) {
+            $ele[$i]['#attributes'] = [
+                'class' => ['linux-package-viewer-package-view']
+            ];
+
+            $ele[$i]['name'] = [
+                '#plain_text' => $this->t($result->name),
+            ];
+
+            $ele[$i]['display'] = [
+                '#plain_text' => $this->t($result->displayName),
+            ];
+
+            $ele[$i]['version'] = [
+                '#plain_text' => $this->t($result->version),
+            ];
+        }
+        
+        $ele['#prefix'] = '<div id="linux-package-viewer-package-view-wrapper">';
+        $ele['#suffix'] = '</div>';
+        return $ele;
     }
 
     /**

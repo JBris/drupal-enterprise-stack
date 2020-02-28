@@ -40,12 +40,11 @@ class LinuxPackageViewerApiController extends ControllerBase {
 
     public function search(Request $request, $distribution, $package) {
         $definitions = $this->pluginManager->getDefinitions();
-        $id = "${distribution}_viewer";
 
-        if (!isset($definitions[$id])) {
+        if (!isset($definitions[$distribution])) {
             return new JsonResponse(["error" => 1, "message" => "Unsupported distribution: ${distribution}"], 400);
         }
-        $instance = $this->pluginManager->createInstance($id);
+        $instance = $this->pluginManager->createInstance($distribution);
         $instance->setPackage($package);
         $results = $instance->search();
         $status = 200;
@@ -55,12 +54,11 @@ class LinuxPackageViewerApiController extends ControllerBase {
 
     public function view(Request $request, $distribution, $package) {
         $definitions = $this->pluginManager->getDefinitions();
-        $id = "${distribution}_viewer";
 
-        if (!isset($definitions[$id])) {
+        if (!isset($definitions[$distribution])) {
             return new JsonResponse(["error" => 1, "message" => "Unsupported distribution: ${distribution}"], 400);
         }
-        $instance = $this->pluginManager->createInstance($id);
+        $instance = $this->pluginManager->createInstance($distribution);
         $instance->setPackage($package);
         $results = $instance->view();
         $status = 200;

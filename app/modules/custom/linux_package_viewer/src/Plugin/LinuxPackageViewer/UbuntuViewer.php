@@ -7,7 +7,7 @@ use Drupal\linux_package_viewer\Plugin\LinuxPackageViewerPluginBase;
 
 /**
  * @LinuxPackageViewerPlugin(
- *   id = "ubuntu_viewer",
+ *   id = "ubuntu",
  *   distribution = "Ubuntu"
  * )
  */
@@ -84,6 +84,73 @@ class UbuntuViewer extends LinuxPackageViewerPluginBase implements ContainerFact
     public function view() {
         $info = $this->viewRaw();
         return $this->flattenPackageInfo($info);
+    }
+
+    /**
+    * {@inheritdoc}
+    */
+    public function render() {
+        $results = $this->view();
+        if (isset($results->error)) {
+            $msg = $results->message;
+            $ele = [
+                '#prefix' => '<br/>',
+                '#plain_text' => $this->t("Error: ${msg}"),
+                '#suffix' => '<br/>',
+            ];
+            return $ele;
+        }
+
+        foreach($entries as $entry) {
+            $result = (object) [];
+            $result->name = $entry->source_package_name;
+            $result->displayName = $entry->display_name;
+            $result->version = $entry->source_package_version;
+            $result->status = $entry->status;
+            $result->publishDate = $entry->date_published;
+            $results[] = $result;
+        }
+
+        $ele = [
+            '#type' => 'table',
+            '#header' => [
+                $this->t('Name'),
+                $this->t('Display'),
+                $this->t('Version'),
+                $this->t('Status'),
+                $this->t('Date'),
+            ],
+        ];
+
+        foreach($results as $i => $result) {
+            $ele[$i]['#attributes'] = [
+                'class' => ['linux-package-viewer-package-view']
+            ];
+
+            $ele[$i]['name'] = [
+                '#plain_text' => $this->t($result->name),
+            ];
+
+            $ele[$i]['display'] = [
+                '#plain_text' => $this->t($result->displayName),
+            ];
+
+            $ele[$i]['version'] = [
+                '#plain_text' => $this->t($result->version),
+            ];
+            
+            $ele[$i]['status'] = [
+                '#plain_text' => $this->t($result->status),
+            ];
+    
+            $ele[$i]['date'] = [
+                '#plain_text' => $result->publishDate,
+            ];
+        }
+        
+        $ele['#prefix'] = '<div id="linux-package-viewer-package-view-wrapper">';
+        $ele['#suffix'] = '</div>';
+        return $ele;
     }
 
     /**

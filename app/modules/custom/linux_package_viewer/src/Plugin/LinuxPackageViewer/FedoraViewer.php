@@ -7,7 +7,7 @@ use Drupal\linux_package_viewer\Plugin\LinuxPackageViewerPluginBase;
 
 /**
  * @LinuxPackageViewerPlugin(
- *   id = "fedora_viewer",
+ *   id = "fedora",
  *   distribution = "Fedora"
  * )
  */
@@ -88,6 +88,69 @@ class FedoraViewer extends LinuxPackageViewerPluginBase implements ContainerFact
         $info = $this->viewRaw();
         return $this->flattenPackageInfo($info);
     }
+
+    /**
+    * {@inheritdoc}
+    */
+    public function render() {
+        $results = $this->view();
+        if (isset($results->error)) {
+            $msg = $results->message;
+            $ele = [
+                '#prefix' => '<br/>',
+                '#plain_text' => $this->t("Error: ${msg}"),
+                '#suffix' => '<br/>',
+            ];
+            return $ele;
+        }
+
+        $ele = [
+            '#type' => 'table',
+            '#header' => [
+                $this->t('Name'),
+                $this->t('Display'),
+                $this->t('Version'),
+                $this->t('Release'),
+                $this->t('Owner'),
+                $this->t('Source'),
+            ],
+        ];
+
+        foreach($results as $i => $result) {
+            $ele[$i]['#attributes'] = [
+                'class' => ['linux-package-viewer-package-view']
+            ];
+
+            $ele[$i]['name'] = [
+                '#plain_text' => $this->t($result->name),
+            ];
+
+            $ele[$i]['display'] = [
+                '#plain_text' => $this->t($result->displayName),
+            ];
+
+            $ele[$i]['version'] = [
+                '#plain_text' => $this->t($result->version),
+            ];
+
+            $ele[$i]['release'] = [
+                '#plain_text' => $this->t($result->release),
+            ];
+
+            $ele[$i]['owner'] = [
+                '#plain_text' => $this->t($result->owner),
+            ];
+
+            $ele[$i]['source'] = [
+                '#plain_text' => $this->t($result->source),
+            ];
+        }
+        
+        $ele['#prefix'] = '<div id="linux-package-viewer-package-view-wrapper">';
+        $ele['#suffix'] = '</div>';
+        return $ele;
+    }
+
 
     /**
     * {@inheritdoc}

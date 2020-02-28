@@ -6,6 +6,7 @@ use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
 use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use GuzzleHttp\ClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -15,6 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 abstract class LinuxPackageViewerPluginBase extends PluginBase implements ContainerFactoryPluginInterface, LinuxPackageViewerInterface, RefinableCacheableDependencyInterface {
 
   use RefinableCacheableDependencyTrait;
+  use StringTranslationTrait;
 
   /**
    * The package to use in a search.
