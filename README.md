@@ -21,7 +21,7 @@ All included contrib modules can be found here: https://github.com/JBris/drupal-
 
 An example settings.php file can be found here. https://github.com/JBris/drupal-enterprise-stack/blob/master/app/sites/default/settings.php. Docker environment variables can be accessed using the `getenv()` function.
 
-An example site configuration is included here: https://github.com/JBris/drupal-enterprise-stack/tree/master/app/sites/default/files/config_MLQPXj45WOqx2XBN3R5d-PkA276UGlotFeUaBTV7U0uk1ZuVqjB9syEEWKkR6JsKf8nlNqfJFQ/sync. You should remove this directory and add re-add the config_* pattern to .gitignore.
+An example site configuration is included here: [config](https://github.com/JBris/drupal-enterprise-stack/tree/master/app/sites/default/files/config_MLQPXj45WOqx2XBN3R5d-PkA276UGlotFeUaBTV7U0uk1ZuVqjB9syEEWKkR6JsKf8nlNqfJFQ/sync). You should remove this directory and re-add the config_* pattern to .gitignore.
 
 ## Drush <a name="drush"/>
 
