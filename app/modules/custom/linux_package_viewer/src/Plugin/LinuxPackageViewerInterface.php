@@ -35,7 +35,7 @@ interface LinuxPackageViewerInterface extends PluginInspectionInterface {
    * @return array
    *   A structured list of search results.
    */
-  public function execute();
+  public function search();
 
   
   /**
@@ -44,7 +44,7 @@ interface LinuxPackageViewerInterface extends PluginInspectionInterface {
    * @return array
    *   A structured list of search results.
    */
-  public function executeRaw();
+  public function searchRaw();
 
   /**
    * Return the base package search URL

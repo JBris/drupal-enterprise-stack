@@ -19,7 +19,7 @@ class UbuntuViewer extends LinuxPackageViewerPluginBase implements ContainerFact
     /**
     * {@inheritdoc}
     */
-    public function executeRaw() {
+    public function searchRaw() {
         $package = $this->getPackage();
         if ($package === "") { return []; }
         $url = $this->getSearchUrl();
@@ -47,8 +47,8 @@ class UbuntuViewer extends LinuxPackageViewerPluginBase implements ContainerFact
     /**
     * {@inheritdoc}
     */
-    public function execute() {
-        $packages = $this->executeRaw();
+    public function search() {
+        $packages = $this->searchRaw();
         return $this->extractPackageNames($packages);
     }
 

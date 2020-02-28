@@ -47,7 +47,20 @@ class LinuxPackageViewerApiController extends ControllerBase {
         }
         $instance = $this->pluginManager->createInstance($id);
         $instance->setPackage($package);
-        $results = $instance->execute();
+        $results = $instance->search();
+        return new JsonResponse($results); 
+    }
+
+    public function view(Request $request, $distribution, $package) {
+        $definitions = $this->pluginManager->getDefinitions();
+        $id = "${distribution}_viewer";
+
+        if (!isset($definitions[$id])) {
+            return new JsonResponse(["error" => 1, "message" => "Unsupported distribution: ${distribution}"], 400);
+        }
+        $instance = $this->pluginManager->createInstance($id);
+        $instance->setPackage($package);
+        $results = $instance->search();
         return new JsonResponse($results); 
     }
  }

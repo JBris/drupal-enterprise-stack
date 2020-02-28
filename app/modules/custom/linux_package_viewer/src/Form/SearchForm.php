@@ -68,6 +68,7 @@ class SearchForm extends FormBase {
         $form['save'] = [
             '#type' => 'submit',
             '#value' => $this->t('Search'),
+            '#suffix' => '<br/>',
             '#ajax' => [
                 'callback' => '::searchPackages',
                 'wrapper' => 'linux-package-viewer-search-results-wrapper', 
@@ -95,7 +96,7 @@ class SearchForm extends FormBase {
         $distribution = $formState->getValue('distribution');
         $instance = $this->pluginManager->createInstance($distribution);
         $instance->setPackage($package);
-        $results = $instance->execute();
+        $results = $instance->search();
 
         $ele = [
             '#type' => 'table',
@@ -115,7 +116,7 @@ class SearchForm extends FormBase {
             ];
         }
         
-        $ele['#prefix'] = '<div id="linux-package-viewer-search-results-wrapper">';
+        $ele['#prefix'] = '<br/> <div id="linux-package-viewer-search-results-wrapper">';
         $ele['#suffix'] = '</div>';
         return $ele;
     }

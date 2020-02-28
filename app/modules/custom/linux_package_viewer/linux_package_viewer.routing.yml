@@ -21,3 +21,14 @@ linux_package_viewer.search.api:
     options:
         _auth: ['basic_auth', 'cookie', 'oauth2']
  
+linux_package_viewer.view.api:
+    path: /api/linux-packages/view/{distribution}/{package}
+    defaults:
+        _controller: Drupal\linux_package_viewer\Controller\LinuxPackageViewerApiController::view
+    methods: ['GET', 'POST']
+    # requirements:
+    #   _format: 'json'
+    requirements:
+        _permission: 'view linux packages'
+    options:
+        _auth: ['basic_auth', 'cookie', 'oauth2']
