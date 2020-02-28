@@ -12,12 +12,14 @@ use Drupal\linux_package_viewer\Plugin\LinuxPackageViewerPluginBase;
  * )
  */
 class FedoraViewer extends LinuxPackageViewerPluginBase implements ContainerFactoryPluginInterface {
+    use GetSearchUrlTrait;
+
     const SEARCH_URL = 'https://apps.fedoraproject.org/packages/fcomm_connector/xapian/query/search_packages';
 
     /**
     * {@inheritdoc}
     */
-    public function execute() {
+    public function executeRaw() {
         $package = $this->getPackage();
         if ($package === "") { return []; }
 
@@ -27,7 +29,7 @@ class FedoraViewer extends LinuxPackageViewerPluginBase implements ContainerFact
                 "search" => $package
             ], 
             "rows_per_page" => 10,
-            "start_row" => 10,
+            "start_row" => 0,
         ];
         $searchString = json_encode($search);
         $results = $this->httpClient->get("${url}/${searchString}");
@@ -36,7 +38,10 @@ class FedoraViewer extends LinuxPackageViewerPluginBase implements ContainerFact
         return $decodedBody;
     }
 
-    public function getSearchUrl() {
-        return static::SEARCH_URL;
+    /**
+    * {@inheritdoc}
+    */
+    public function execute() {
+        return $this->executeRaw();
     }
 }

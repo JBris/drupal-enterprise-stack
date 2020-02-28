@@ -12,12 +12,14 @@ use Drupal\linux_package_viewer\Plugin\LinuxPackageViewerPluginBase;
  * )
  */
 class DebianViewer extends LinuxPackageViewerPluginBase implements ContainerFactoryPluginInterface {
+    use GetSearchUrlTrait;
+    
     const SEARCH_URL = 'https://sources.debian.org/api/search';
 
     /**
     * {@inheritdoc}
     */
-    public function execute() {
+    public function executeRaw() {
         $package = $this->getPackage();
         if ($package === "") { return []; }
 
@@ -28,7 +30,11 @@ class DebianViewer extends LinuxPackageViewerPluginBase implements ContainerFact
         return $decodedBody;
     }
 
-    public function getSearchUrl() {
-        return static::SEARCH_URL;
+    /**
+    * {@inheritdoc}
+    */
+    public function execute() {
+        return $this->executeRaw();
     }
+
 }

@@ -17,19 +17,28 @@ class UbuntuViewer extends LinuxPackageViewerPluginBase implements ContainerFact
     /**
     * {@inheritdoc}
     */
-    public function execute() {
+    public function executeRaw() {
         $package = $this->getPackage();
         if ($package === "") { return []; }
 
         $url = $this->getSearchUrl();
         $results = $this->httpClient->get($url, [
-            "ws.op" => "getPublishedSources",
-            "exact_match" => "false",
-            "source_name" => $package
+            "query" => [           
+                "ws.op" => "getPublishedSources",
+                "exact_match" => "false",
+                "source_name" => $package
+            ]
         ]);
         $body = $results->getBody();
         $decodedBody = json_decode($body);
         return $decodedBody;
+    }
+
+    /**
+    * {@inheritdoc}
+    */
+    public function execute() {
+        return $this->executeRaw();
     }
 
     /**
