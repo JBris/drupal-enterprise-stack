@@ -34,7 +34,32 @@ class DebianViewer extends LinuxPackageViewerPluginBase implements ContainerFact
     * {@inheritdoc}
     */
     public function execute() {
-        return $this->executeRaw();
+        $packages = $this->executeRaw();
+        return $this->extractPackageNames($packages);
+    }
+
+    /**
+     * Extract package names from an object of data.
+     * 
+     * @return array
+     *  The list of package names.
+     */
+    protected function extractPackageNames($packages){
+        $results = [];
+        if(!isset($packages->results)) { return $results; }
+        $packageResults = $packages->results;
+
+        if(isset($packageResults->exact->name)) {
+            $results[] = $packageResults->exact->name;
+        }
+
+        if (!isset($packageResults->other)) { return $results; }
+
+        foreach($packageResults->other as $package) {
+            $results[] = $package->name;
+        }
+
+        return $results;
     }
 
 }

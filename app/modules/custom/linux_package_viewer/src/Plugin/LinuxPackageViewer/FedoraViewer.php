@@ -42,6 +42,25 @@ class FedoraViewer extends LinuxPackageViewerPluginBase implements ContainerFact
     * {@inheritdoc}
     */
     public function execute() {
-        return $this->executeRaw();
+        $packages = $this->executeRaw();
+        return $this->extractPackageNames($packages);
+    }
+
+    /**
+     * Extract package names from an object of data.
+     * 
+     * @return array
+     *  The list of package names.
+     */
+    protected function extractPackageNames($packages){
+        $results = [];
+        if(!isset($packages->rows)) { return $results; }
+        $rows = $packages->rows;
+
+        foreach($rows as $row) {
+            $results[] = $row->name;
+        }
+
+        return $results;
     }
 }

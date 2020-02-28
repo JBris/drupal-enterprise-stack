@@ -12,6 +12,8 @@ use Drupal\linux_package_viewer\Plugin\LinuxPackageViewerPluginBase;
  * )
  */
 class UbuntuViewer extends LinuxPackageViewerPluginBase implements ContainerFactoryPluginInterface {
+    use GetSearchUrlTrait;
+
     const SEARCH_URL = 'https://api.launchpad.net/1.0/ubuntu/+archive/primary';
 
     /**
@@ -26,7 +28,9 @@ class UbuntuViewer extends LinuxPackageViewerPluginBase implements ContainerFact
             "query" => [           
                 "ws.op" => "getPublishedSources",
                 "exact_match" => "false",
-                "source_name" => $package
+                "source_name" => $package,
+                "ws.size" => "200",
+                "ordered" => "false"
             ]
         ]);
         $body = $results->getBody();
@@ -38,13 +42,26 @@ class UbuntuViewer extends LinuxPackageViewerPluginBase implements ContainerFact
     * {@inheritdoc}
     */
     public function execute() {
-        return $this->executeRaw();
+        $packages = $this->executeRaw();
+        return $this->extractPackageNames($packages);
     }
 
     /**
-    * {@inheritdoc}
-    */
-    public function getSearchUrl() {
-        return static::SEARCH_URL;
+     * Extract package names from an object of data.
+     * 
+     * @return array
+     *  The list of package names.
+     */
+    protected function extractPackageNames($packages){
+        $results = [];
+        if(!isset($packages->entries)) { return $results; }
+        $entries = $packages->entries;
+
+        foreach($entries as $entry) {
+            $key = $entry->source_package_name;
+            $results[$key] = true;
+        }
+
+        return array_keys($results);
     }
 }
