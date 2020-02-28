@@ -122,27 +122,27 @@ class FedoraViewer extends LinuxPackageViewerPluginBase implements ContainerFact
             ];
 
             $ele[$i]['name'] = [
-                '#plain_text' => $this->t($result->name),
+                '#plain_text' => $result->name,
             ];
 
             $ele[$i]['display'] = [
-                '#plain_text' => $this->t($result->displayName),
+                '#plain_text' => $result->displayName,
             ];
 
             $ele[$i]['version'] = [
-                '#plain_text' => $this->t($result->version),
+                '#plain_text' => $result->version,
             ];
 
             $ele[$i]['release'] = [
-                '#plain_text' => $this->t($result->release),
+                '#plain_text' => $result->release,
             ];
 
             $ele[$i]['owner'] = [
-                '#plain_text' => $this->t($result->owner),
+                '#plain_text' => $result->owner,
             ];
 
             $ele[$i]['source'] = [
-                '#plain_text' => $this->t($result->source),
+                '#plain_text' => $result->source,
             ];
         }
         

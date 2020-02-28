@@ -100,15 +100,15 @@ class DebianViewer extends LinuxPackageViewerPluginBase implements ContainerFact
             ];
 
             $ele[$i]['name'] = [
-                '#plain_text' => $this->t($result->name),
+                '#plain_text' => ($result->name,
             ];
 
             $ele[$i]['display'] = [
-                '#plain_text' => $this->t($result->displayName),
+                '#plain_text' => $result->displayName,
             ];
 
             $ele[$i]['version'] = [
-                '#plain_text' => $this->t($result->version),
+                '#plain_text' => $result->version,
             ];
         }
         
