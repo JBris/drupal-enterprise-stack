@@ -32,7 +32,13 @@ class FedoraViewer extends LinuxPackageViewerPluginBase implements ContainerFact
             "start_row" => 0,
         ];
         $searchString = json_encode($search);
-        $results = $this->httpClient->get("${url}/${searchString}");
+
+        try {
+            $results = $this->httpClient->get("${url}/${searchString}");
+        } catch (\Exception $e) {
+            return [];
+        }
+
         $body = $results->getBody();
         $decodedBody = json_decode($body);
         return $decodedBody;

@@ -43,24 +43,81 @@ class SearchForm extends FormBase {
     }
 
     public function submitForm(array &$form, FormStateInterface $form_state) {
-
+        $form_state->setRebuild(false);
     }
 
     public function buildForm(array $form, FormStateInterface $form_state) {
-        $form['title'] = [
+
+        $definitions = $this->pluginManager->getDefinitions();
+        $form['distribution'] = [
+            '#type' => 'select',
+            '#title' => $this->t('Distribution'),
+        ];
+
+        foreach($definitions as $id => $definition) {
+            $form['distribution']['#options'][$id] = $this->t($definition['distribution']);  
+        }
+
+        $form['package'] = [
             '#type' => 'textfield',
-            '#title' => $this->t('Search'),
+            '#title' => $this->t('Package'),
             '#size' => 60,
             '#maxlength' => 128,
-            '#required' => TRUE,
         ];
   
-        $form['save'] = array(
+        $form['save'] = [
             '#type' => 'submit',
-            '#value' => $this->t('Save'),
-        );
+            '#value' => $this->t('Search'),
+            '#ajax' => [
+                'callback' => '::searchPackages',
+                'wrapper' => 'linux-package-viewer-search-results-wrapper', 
+                'event' => 'click',
+                'progress' => [
+                    'type' => 'throbber',
+                    'message' => NULL,
+                ]
+            ]
+        ];
+
+        $form['results'] = [
+            '#type' => 'container',
+            '#prefix' => '<div id="linux-package-viewer-search-results-wrapper">',
+            '#suffix' => '</div>',
+        ];
 
         return $form;
+    }
+
+    public function searchPackages($form, FormStateInterface $formState) {
+        $package = trim($formState->getValue('package'));
+        if ($package === '') { return $form['results']; }
+
+        $distribution = $formState->getValue('distribution');
+        $instance = $this->pluginManager->createInstance($distribution);
+        $instance->setPackage($package);
+        $results = $instance->execute();
+
+        $ele = [
+            '#type' => 'table',
+            '#header' => [
+                $this->t('Package'),
+                $this->t('View'),
+            ],
+        ];
+
+        foreach($results as $i => $result){
+            $ele[$i]['#attributes'] = [
+                'class' => ['linux-package-viewer-search-result']
+            ];
+
+            $ele[$i]['package'] = [
+                '#plain_text' => $this->t($result),
+            ];
+        }
+        
+        $ele['#prefix'] = '<div id="linux-package-viewer-search-results-wrapper">';
+        $ele['#suffix'] = '</div>';
+        return $ele;
     }
 
 }

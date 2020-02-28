@@ -3,7 +3,7 @@ linux_package_viewer.search:
     defaults:
       _form: '\Drupal\linux_package_viewer\Form\SearchForm'
       _title: 'Search'
-    methods: ['GET']
+    methods: ['GET', 'POST']
     requirements:
         _permission: 'view linux packages'
     options:

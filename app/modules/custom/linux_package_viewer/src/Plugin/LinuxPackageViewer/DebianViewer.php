@@ -22,9 +22,14 @@ class DebianViewer extends LinuxPackageViewerPluginBase implements ContainerFact
     public function executeRaw() {
         $package = $this->getPackage();
         if ($package === "") { return []; }
-
         $url = $this->getSearchUrl();
-        $results = $this->httpClient->get("${url}/${package}");
+
+        try {
+            $results = $this->httpClient->get("${url}/${package}");
+        } catch (\Exception $e) {
+            return [];
+        }
+
         $body = $results->getBody();
         $decodedBody = json_decode($body);
         return $decodedBody;
